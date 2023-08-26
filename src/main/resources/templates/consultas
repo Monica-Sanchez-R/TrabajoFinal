@@ -1,0 +1,47 @@
+-- Consulta Nro1
+-- Realizar  una  consulta  que  muestre  un  listado  de películas,  que  incluya  las  siguientes 
+-- columnas; título de la película, el año de lanzamiento y el género de la misma, la lista debe 
+-- estar ordenada por el año de lanzamiento de forma ascendente.
+
+Select p.titulo AS "Título de la pelicula", g.nombre_genero AS "Género",  p.anio_lanzamiento AS "Año de lanzamiento"
+From peliculas p
+Join generos g ON p.id_genero = g.id_genero
+order By p.anio_lanzamiento ASC;
+
+-- #Consulta Nro2
+-- Como se observa en el listado anterior, hay varias películas de un mismo género, realice una consulta que devuelva un listado con el número de películas por género ordenado de forma descendente --
+select g.nombre_genero, count(p.id_pelicula) as numero_peliculas from generos g
+left join peliculas p on g.id_genero = p.id_genero
+group by  g.nombre_genero
+order by numero_peliculas desc;
+
+
+-- #Consulta Nro3
+-- Luego deberá realizar una consulta que permita mostrar el promedio de calificaciones para una película específica--
+select * from peliculas;
+
+select p.titulo as pelicula, avg(c.puntuacion) as promedio from peliculas p
+inner join calificaciones c on p.id_pelicula = c.id_pelicula where p.id_pelicula = 1;
+
+-- consulta Nro4
+
+-- Ahora realice una consulta que muestre un listado con el top 3 de películas con mayor 
+-- calificación y ordenarlas de forma descendente
+
+Select p.titulo AS "Titulo de la pelicula", AVG(c.puntuacion) AS "Calificación promedio"
+From peliculas p
+Join calificaciones c on p.id_pelicula = c.id_pelicula
+group by p.id_pelicula, p.titulo
+order by "calificación promedio" DESC LIMIT 3;
+
+
+-- consulta Nro5
+
+-- Ya que estamos en calificaciones realice una consulta que entregue todas las reseñas 
+-- realizadas por un usuario dado, incluyendo el título de la película.
+
+SELECT u.nombreusuario AS "Nombre de usuario", p.titulo AS "Título de la película", c.resena AS "Reseña"
+FROM calificaciones c
+JOIN peliculas p ON c.id_pelicula = p.id_pelicula
+JOIN usuarios u ON c.id_usuario = u.id_usuario
+WHERE c.id_usuario = 1;
